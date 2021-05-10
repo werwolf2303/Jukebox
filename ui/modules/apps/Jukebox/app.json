@@ -1,0 +1,9 @@
+{
+  "name" : "My App",
+  "author": "Me",
+  "version": "0.1",
+  "description": "Just a tutorial app",
+  "directive": "myApp",
+  "domElement": "<my-app></my-app>",
+  "css": { "width": "320px", "height": "140px", "top": "270px", "left": "200px" }   
+}
