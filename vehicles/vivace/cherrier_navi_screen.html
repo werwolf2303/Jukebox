@@ -139,10 +139,20 @@ body {
     <div id="bootscreen"></div>
     <div style="height: 100%; width: 100%; position: relative;">
         <div style="width: 100%; height: 100%; z-index:1; position: absolute;">
-            <div id="topBar" class="gpsBar">
+		    <div id="music" class="gpsBar">
+			     <div style="float:left">
+				  <div id="playinfo" style="margin-right: 2px"></div>
+				 </div>
+				 <div style="float: right">
+				    
+				 </div>
+			</div>
+            <div id="topBar" class="gpsBar" style="display:none">
                 <div style="float: left;">
-                    <span class="material-icons" style="margin-right: 2px;">settings_input_antenna</span>Radio Haricot
-                </div>
+					<div id="logo">
+                    <span id="logo" class="material-icons" style="margin-right: 2px;">settings_input_antenna</span>Radio Haricot
+                    </div>                
+				</div>
                 <div style="float: right;">
                     <div class="verticalSep"></div>
                     <div>AC Auto</div>
@@ -157,7 +167,7 @@ body {
                 <div style="float: left;">
                     <div>MENU</div>
                     <div class="verticalSep"></div>
-                    <span class="material-icons">audiotrack</span>
+                    <span style="color:green" class="material-icons">audiotrack</span>
                     <span class="material-icons">directions</span>
                     <span class="material-icons">local_phone</span>
                 </div>
@@ -168,6 +178,7 @@ body {
                 </div>
             </div>
         </div>
+		<div id="gpss">
         <!-- map container -->
         <div id="overflow-wrap" style=" width: 100%; height: 100%; overflow: hidden">
             <div id="mapContainer" style="overflow: visible;">
@@ -175,7 +186,7 @@ body {
             </div>
         </div>
     </div>
-    <div style="position: absolute; top: calc(160px - 16px ); left: 240px; transform: rotateX(50deg)">
+    <div style="position: absolute; top: calc(160px - 16px ); left: 240px; transform: rotateX(50deg);">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 33.867 33.867" id="svg8">
             <g id="layer1" transform="translate(0 -263.133)">
                 <g id="vehicleMarker" transform="matrix(4.53704 0 0 4.53704 -7.075 -1044.026)" stroke-width=".265">
@@ -185,14 +196,39 @@ body {
             </g>
         </svg>
     </div>
+	</div>
 </body>
 
 <script>
     var music_player = (function () {
         var time = document.getElementById('clockTxt');
-    
+        var logo = document.getElementById('logo');
+		var playinfo = document.getElementById('playinfo');
+		var musicname = '';
+		var music = document.getElementById("music");
+		var topBar = document.getElementById("topBar");
+		function onStartPlaying() {
+		    //setTimeout(function(){
+			    topBar.setAttribute("style", "display:none");
+ 	            music.setAttribute("style", "");
+			    playinfo.textContent="Playing now: " + musicname;
+            //}, 4000);
+		}
         function updateSongData(data){
-            time.textContent = data.current_time.toFixed(1);
+		    if(data.current_time.toFixed(1)=="0.0") {
+			}else{
+			    if(data.current_time.toFixed(1)>"0.5") {
+				document.getElementById("music").setAttribute("style", "display:none");
+				document.getElementById("topBar").setAttribute("style", "");
+				}else{
+				    onStartPlaying();
+				} 
+			}
+            //time.textContent = data.current_time.toFixed(1);
+			if(data.name==musicname) {
+			}else{
+			    musicname=data.name;
+			}
         }
         
         return {
