@@ -51,14 +51,12 @@ angular.module('beamng.apps')
         
         var json_data = JSON.stringify(data);
         
-        //Gets vehicle name
-        bngApi.activeObjectLua("v.config.model", function(name) {
-			//Send data to Lua beamNavigator
-            bngApi.activeObjectLua(
-            "controller.getController('" + name + "_navi').setSongData('" 
-            + json_data + "')");
-		});	
-        
+        //Send data to Lua beamNavigator controller
+        bngApi.activeObjectLua(
+            "local beamNav = controller.getControllersByType('beamNavigator')[1];" +
+            "if beamNav then " +
+            "   beamNav.setSongData('" + json_data + "') " +
+            "end");
       });
     }
   };
