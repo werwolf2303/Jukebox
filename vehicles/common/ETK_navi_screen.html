@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <script src="../../../ui/lib/ext/hu.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 10px;
+        }
+
+        #mapContainer {
+            overflow: hidden;
+            background: #555555;
+        }
+
+        #mapPerspective {
+            transform: rotateX(50deg);
+        }
+
+        #map {
+            max-width: 256px;
+            max-height: 128px;
+            overflow: visible;
+        }
+
+        #pointer {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -6px;
+            margin-top: -10px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+            border-width: 0 6px 20px 6px;
+            border-color: transparent transparent #2568B0 transparent;
+            stroke: 2px solid white;
+        }
+
+        #bootscreen {
+            position: absolute;
+            width: 256px;
+            height: 128px;
+            bottom: 0;
+            left: 0;
+            z-index: 1000;
+            background-image: url('ETK_bootscreen.png');
+            background-color: black;
+            background-size: cover;
+            transition: opacity 2s, transform 1.5s;
+        }
+
+        .fadeout {
+            opacity: 0;
+            /* transform: scale(2, 2); */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="bootscreen"></div>
+    <div style="height: 100%; width: 100%; position: relative;">
+        <div style="width: 100%; height: 100%; z-index:1; position: absolute;">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="256" height="128"
+                viewBox="0 0 67.733 33.867" id="svg8">
+                <defs id="defs2">
+                    <linearGradient id="linearGradient1409">
+                        <stop offset="0" id="stop1405" />
+                        <stop offset="1" id="stop1407" stop-color="#1a1a1a" />
+                    </linearGradient>
+                    <linearGradient xlink:href="#linearGradient1409" id="linearGradient1411" x1="7.673" y1="281.125" x2="6.879"
+                        y2="281.125" gradientUnits="userSpaceOnUse" />
+                </defs>
+                <g id="layer1" transform="translate(0 -263.133)">
+                    <path id="rect1370" fill="url(#linearGradient1411)" stroke-width=".264" stroke-linecap="round"
+                        stroke-linejoin="round" stroke-dashoffset="42.633" stroke-opacity=".118" d="M0 263.133h7.938V297H0z" />
+                    <path d="M7.937 263.133V297" id="path1415" fill="none" stroke="#aaa" stroke-width=".25" />
+                    <path d="M54.24 297s.01-1.323 1.035-2.646c1.01-1.303 2.031-1.323 2.031-1.323h10.427V297z" id="path1425"
+                        fill="#1a1a1a" stroke-width=".233" />
+                    <path d="M54.24 297s.057-1.406.945-2.555c1.054-1.364 2.121-1.414 2.121-1.414h10.427" id="path1427"
+                        fill="none" stroke="#a1a1a1" stroke-width=".176" />
+                    <path d="M6.085 288.46H1.852" id="path1429" fill="#999" stroke="#a0a0a0" stroke-width=".132"
+                        stroke-opacity=".49" />
+                    <path d="M6.085 279.994H1.852" id="path1437-6" fill="none" stroke="#a0a0a0" stroke-width=".132"
+                        stroke-opacity=".49" />
+                    <path d="M6.085 271.527H1.852" id="path1437-6-2" fill="none" stroke="#a0a0a0" stroke-width=".132"
+                        stroke-opacity=".49" />
+                    <text style="line-height:1.25;-inkscape-font-specification:Arial" x="57.539" y="296.004" id="text1915"
+                        font-weight="400" font-size="10.583" font-family="Arial" letter-spacing="0" word-spacing="0"
+                        stroke-width=".265">
+                        <tspan id="timeText" x="57.539" y="296.004" font-size="2.822" fill="#fff">12:32</tspan>
+                    </text>
+                    <text style="line-height:1.25;-inkscape-font-specification:Arial" x="3.951" y="270.226" id="text1915-1"
+                        font-weight="400" font-size="10.583" font-family="Arial" letter-spacing="0" word-spacing="0"
+                        stroke-width=".265">
+                        <tspan id="tspan1913-6" x="3.951" y="270.226" style="text-align:center" font-size="1.411"
+                            text-anchor="middle" fill="#fff">HOME</tspan>
+                    </text>
+                    <text style="line-height:1.25;-inkscape-font-specification:Arial" x="3.978" y="278.693" id="text1915-1-4"
+                        font-weight="400" font-size="10.583" font-family="Arial" letter-spacing="0" word-spacing="0"
+                        stroke-width=".265">
+                        <tspan id="tspan1913-6-9" x="3.978" y="278.693" style="text-align:center" font-size="1.411"
+                            text-anchor="middle" fill="#fff">TEL</tspan>
+                    </text>
+                    <text style="line-height:1.25;-inkscape-font-specification:Arial" x="3.945" y="287.16" id="text1915-1-2"
+                        font-weight="400" font-size="10.583" font-family="Arial" letter-spacing="0" word-spacing="0"
+                        stroke-width=".265">
+                        <tspan id="tspan1913-6-0" x="3.945" y="287.16" style="text-align:center" font-size="1.411"
+                            text-anchor="middle" fill="#fff">RADIO</tspan>
+                    </text>
+                    <text style="line-height:1.25;-inkscape-font-specification:Arial" x="3.921" y="295.097" id="text1915-1-46"
+                        font-weight="400" font-size="10.583" font-family="Arial" letter-spacing="0" word-spacing="0"
+                        stroke-width=".265">
+                        <tspan id="tspan1913-6-6" x="3.921" y="295.097" style="text-align:center" font-size="1.411"
+                            text-anchor="middle" fill="#fff">NAV</tspan>
+                    </text>
+                    <path id="path2031" d="M2.655 282.406a.284.284 0 0 0-.186.264v1.715c0 .157.133.285.3.285h2.4c.166 0 .3-.128.3-.285v-1.715a.292.292 0 0 0-.3-.285H3.414l1.239-.478-.102-.237zm.564 1.979a.44.44 0 0 1-.45-.43.44.44 0 0 1 .45-.428.44.44 0 0 1 .45.429.44.44 0 0 1-.45.429zm1.95-1.143h-.3v-.286h-.3v.286h-1.8v-.572h2.4z"
+                        fill="#fff" stroke-width=".146" />
+                    <path id="path2017" d="M3.072 274.476c.24.471.627.856 1.098 1.098l.367-.367a.166.166 0 0 1 .17-.04c.187.062.388.095.595.095.092 0 .167.075.167.167v.582a.167.167 0 0 1-.167.166 2.833 2.833 0 0 1-2.833-2.833c0-.092.075-.167.166-.167h.584c.091 0 .166.075.166.167 0 .208.034.408.095.595a.167.167 0 0 1-.041.17z"
+                        fill="#fff" stroke-width=".167" />
+                    <path id="path2001" d="M3.969 289.711l-1.5 2.888.142.112 1.358-.474 1.358.474.142-.112z" fill="#3570c4"
+                        stroke-width=".178" />
+                    <path id="path2074" d="M3.569 268.25v-1.413h.8v1.412h1v-1.882h.6l-2-2.118-2 2.118h.6v1.882z" fill="#fff"
+                        stroke-width=".217" />
+                </g>
+            </svg>
+        </div>
+        <!-- map container -->
+        <div id="overflow-wrap" style=" width: 100%; height: 100%; overflow: hidden">
+            <div id="mapContainer" style="overflow: visible;">
+                <svg style="overflow: visible;"></svg>
+            </div>
+        </div>
+    </div>
+    <div style="position: absolute; top: 48px; left: 112px; transform: rotateX(50deg)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 33.867 33.867" id="svg8">
+            <g id="layer1" transform="translate(0 -263.133)">
+                <g id="vehicleMarker" transform="matrix(4.53704 0 0 4.53704 -7.075 -1044.026)" stroke-width=".265">
+                    <path id="path3682-6" d="M5.292 288.798l-2.646 6.614 2.646-1.322 2.646 1.322z" fill="#282828" />
+                    <path id="path3682" d="M5.292 288.269l-2.646 6.614 2.646-1.323 2.645 1.323z" fill="#3570C4" />
+                </g>
+            </g>
+        </svg>
+    </div>
+</body>
+
+<script>
+    var music_player = (function () {
+        var time = document.getElementById('timeText');
+    
+        function updateSongData(data){
+            time.textContent = data.current_time.toFixed(1);
+        }
+        
+        return {
+            updateSongData: updateSongData
+        }
+    })();
+    
+    var map = (function () {
+        var state = {
+            x: 0,
+            y: 0,
+            zoom: 500,
+            rotation: 0,
+            time: 0
+        };
+
+        var mapContainer = document.getElementById('mapContainer')
+        var time = document.getElementById('timeText');
+        var svg = mapContainer.children[0];
+
+        var elements = [];
+        var ROADCOLOR = '#D8D8D8';
+
+        var init = false;
+        var mapScale = 1;
+        var mapDimensions = []
+
+        function _createLine(p1, p2, color) {
+            hu('<line>', svg).attr({
+                x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y,
+                stroke: color,
+                strokeWidth: Math.max(p1.radius, p2.radius),
+                strokeLinecap: "round",
+            });
+        }
+
+        function initMap(data) {
+
+            // setup map dimensions
+            mapDimensions = [
+                // data.terrainOffset[0] / mapScale,
+                // data.terrainOffset[1] / mapScale,
+                -data.terrainSize[0] / (mapScale*2),
+                -data.terrainSize[1] / (mapScale*2),
+                data.terrainSize[0] / mapScale,
+                data.terrainSize[1] / mapScale
+            ];
+
+            if (init === false) {
+                // init map svg + background image
+                if (data.minimapImage) {
+                    var bgImage = hu('<image>', svg).attr({
+                        'x': data.terrainOffset[0] / mapScale,
+                        'y': data.terrainOffset[1] / mapScale,
+                        'width': data.terrainSize[0] / mapScale,
+                        'height': data.terrainSize[1] / mapScale,
+                        'transform': "scale(-1,-1)",
+                        'xlink:href': "/" + data.minimapImage,
+                    });
+                }
+
+                svg.style.transform = `scale(-1, -1)`
+                mapContainer.style.width = data.terrainSize[0] / mapScale + "px";
+                mapContainer.style.height = data.terrainSize[1] / mapScale + "px";
+                svg.setAttribute('viewBox', mapDimensions.join(' '));
+
+                // draw roads
+                for (var key in data.nodes) {
+                    var el = data.nodes[key];
+                    // walk the links of the node
+                    if (el.links !== undefined) { // links
+                        for (var key2 in el.links) {
+                            var el2 = data.nodes[key2];
+                            _createLine({
+                                x: -el.pos[0] / mapScale,
+                                y: el.pos[1] / mapScale,
+                                radius: Math.min(Math.max(el.radius, 0), 5) * 3
+                            }, {
+                                    x: -el2.pos[0] / mapScale,
+                                    y: el2.pos[1] / mapScale,
+                                    radius: Math.min(Math.max(el2.radius, 0), 5) * 3    // prevents massive blobs due to waypoints having larger radius'
+                                }, ROADCOLOR
+                            );
+                        }
+                    }
+                }
+                init = true;
+            }
+        }
+
+        function update(data) {
+            if (data !== undefined) {
+                initMap(data);
+            }
+            var date = new Date();
+            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+            //time.textContent = "yeet";
+            var focusX = state.x / mapScale;
+            var focusY = state.y / mapScale;
+            var origin = `${((mapDimensions[0] * -1) / mapScale) - focusX}px ${((mapDimensions[1] * -1) / mapScale) - focusY}px`;
+            mapContainer.style.transformOrigin = origin;
+            var translateX = ((((mapDimensions[0] / mapScale)) + 128) + focusX);
+            var translateY = ((((mapDimensions[1] / mapScale)) + 64) + focusY);
+            mapContainer.style.transform = `translate3d(${translateX}px,${translateY}px, 0px) rotateX(${60 + (state.zoom / 30)}deg) rotateZ(${180 + (state.rotation)}deg) scale(1)`;
+        }
+
+        function setData(data) {
+            if (Object.keys(data).length <= 0) {
+                console.log("Received empty map data")
+                return
+            }
+            update(data);
+            hideBootscreen();
+        }
+
+        function render() {
+            mapContainer.innerHTML = elements.join('');
+        }
+
+        function hideBootscreen() {
+            document.getElementById('bootscreen').className += ' fadeout';
+        }
+
+        function updateData(data) {
+            setLocation(data.x, data.y);
+            setRotation(data.rotation);
+            state.zoom = data.zoom;
+            state.time = data.time;
+        }
+
+        function setLocation(x, y) {
+            state.x = -x;
+            state.y = y;
+        }
+
+        function setRotation(rotation) {
+            state.rotation = rotation + 180;
+            update();
+        }
+
+        return {
+            updateData: updateData,
+            setRotation: setRotation,
+            setData: setData,
+            setLocation: setLocation
+        }
+    })();
+</script>
+
+</html>

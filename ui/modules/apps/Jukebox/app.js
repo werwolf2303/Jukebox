@@ -1,5 +1,5 @@
 angular.module('beamng.apps')
-.directive('myApp', ['StreamsManager', function (StreamsManager) {
+.directive('myApp', ['StreamsManager', 'bngApi', function (StreamsManager, bngApi) {
   return {
 	templateUrl: '/ui/modules/apps/Jukebox/app.html',
     replace: true,
@@ -8,6 +8,7 @@ angular.module('beamng.apps')
 	  var bug = document.getElementById("bug");
       var audio = document.getElementById("audio");	
 	  var info = document.getElementById("info");
+      
 	  scope.hello = function () {
 		  
 	  };
@@ -15,8 +16,11 @@ angular.module('beamng.apps')
 		var bugs = document.getElementById("bug").value;
 		var sel  = document.getElementById("file-input").value;
 		var src = sel.replace("C:\\fakepath\\", "modules/apps/Jukebox/musik/").replace("undefined", "");
+
+        
         audio.src=src;
 		audio.play();
+
 		info.setAttribute("style", "color:white");
 		info.textContent="Jukebox Spielt";
 	  };
@@ -32,6 +36,30 @@ angular.module('beamng.apps')
 		  info.setAttribute("style", "");
 		  info.textContent="Jukebox"; 
 	  }
+      
+      scope.$on('streamsUpdate', function (event, streams) {
+        /* Some code that uses the streams' values */
+        
+        var src_split = audio.src.split("/");
+        var song_name = src_split[src_split.length - 1];
+        
+        var data = {
+            name: song_name,
+            current_time: audio.currentTime,
+            duration: audio.duration
+        };
+        
+        var json_data = JSON.stringify(data);
+        
+        //Gets vehicle name
+        bngApi.activeObjectLua("v.config.model", function(name) {
+			//Send data to Lua beamNavigator
+            bngApi.activeObjectLua(
+            "controller.getController('" + name + "_navi').setSongData('" 
+            + json_data + "')");
+		});	
+        
+      });
     }
   };
 }])
