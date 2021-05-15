@@ -136,8 +136,6 @@ body {
 </head>
 
 <body>
-    <iframe style="width:100%;height:100%;border:none;" src="music_screen.html"></iframe>
-    <div style="display:none" id="content">
     <div id="bootscreen"></div>
     <div style="height: 100%; width: 100%; position: relative;">
         <div style="width: 100%; height: 100%; z-index:1; position: absolute;">
@@ -149,7 +147,7 @@ body {
 				    
 				 </div>
 			</div>
-            <div id="topBar" class="gpsBar" style="display:none">
+            <div id="topBar" class="gpsBar">
                 <div style="float: left;">
 					<div id="logo">
                     <span id="logo" class="material-icons" style="margin-right: 2px;">settings_input_antenna</span>Radio Haricot
@@ -169,7 +167,7 @@ body {
                 <div style="float: left;">
                     <div>MENU</div>
                     <div class="verticalSep"></div>
-                    <span style="color:green" class="material-icons">audiotrack</span>
+                    <span class="material-icons">audiotrack</span>
                     <span class="material-icons">directions</span>
                     <span class="material-icons">local_phone</span>
                 </div>
@@ -199,45 +197,9 @@ body {
         </svg>
     </div>
 	</div>
-    </div>
 </body>
 
 <script>
-    var music_player = (function () {
-        var time = document.getElementById('clockTxt');
-        var logo = document.getElementById('logo');
-		var playinfo = document.getElementById('playinfo');
-		var musicname = '';
-		var music = document.getElementById("music");
-		var topBar = document.getElementById("topBar");
-		function onStartPlaying() {
-		    //setTimeout(function(){
-			    topBar.setAttribute("style", "display:none");
- 	            music.setAttribute("style", "");
-			    playinfo.textContent="Playing now: " + musicname;
-            //}, 4000);
-		}
-        function updateSongData(data){
-		    if(data.current_time.toFixed(1)=="0.0") {
-			}else{
-			    if(data.current_time.toFixed(1)>"0.5") {
-				document.getElementById("music").setAttribute("style", "display:none");
-				document.getElementById("topBar").setAttribute("style", "");
-				}else{
-				    onStartPlaying();
-				} 
-			}
-            //time.textContent = data.current_time.toFixed(1);
-			if(data.name==musicname) {
-			}else{
-			    musicname=data.name;
-			}
-        }
-        
-        return {
-            updateSongData: updateSongData
-        }
-    })();
 
     var map = (function () {
         var state = {
