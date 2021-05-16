@@ -1,0 +1,3 @@
+{
+	"toggle_music_player" : { "title":"Toggle Music Player", "desc":"Switch between GPS and Music Player screen", "order": 200, "cat":"vehicle", "ctx": "vlua", "onDown":"local beamNav = controller.getControllersByType('beamNavigator')[1]; if beamNav then beamNav.toggleMusicPlayerUI() end" }
+}

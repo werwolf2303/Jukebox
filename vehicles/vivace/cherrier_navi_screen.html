@@ -136,10 +136,10 @@ body {
 </head>
 
 <body>
-    <iframe style="width:100%;height:100%;" src="music_screen.html"></iframe>
-    <div style="display:none" id="content">
+    <iframe id="music-player-screen" style="position: absolute; height: 103%; width:100%; display:none;" src="music_screen.html"></iframe>
+    <div id="content">
     <div id="bootscreen"></div>
-    <div style="height: 100%; width: 100%; position: relative;">
+    <div id="ui-menu-bar" style="height: 100%; width: 100%; position: relative;">
         <div style="width: 100%; height: 100%; z-index:1; position: absolute;">
 		    <div id="music" class="gpsBar">
 			     <div style="float:left">
@@ -149,7 +149,7 @@ body {
 				    
 				 </div>
 			</div>
-            <div id="topBar" class="gpsBar" style="display:none">
+            <div id="topBar" class="gpsBar">
                 <div style="float: left;">
 					<div id="logo">
                     <span id="logo" class="material-icons" style="margin-right: 2px;">settings_input_antenna</span>Radio Haricot
@@ -204,37 +204,68 @@ body {
 
 <script>
     var music_player = (function () {
-        var time = document.getElementById('clockTxt');
-        var logo = document.getElementById('logo');
-		var playinfo = document.getElementById('playinfo');
-		var musicname = '';
-		var music = document.getElementById("music");
-		var topBar = document.getElementById("topBar");
-		function onStartPlaying() {
-		    //setTimeout(function(){
-			    topBar.setAttribute("style", "display:none");
- 	            music.setAttribute("style", "");
-			    playinfo.textContent="Playing now: " + musicname;
-            //}, 4000);
-		}
+        var content_screen = document.getElementById('content');
+        var ui_menu_bar = document.getElementById('ui-menu-bar');
+        
+        var music_player_screen = document.getElementById('music-player-screen');  
+        var innerDoc = null;
+    
+        var song_name = null;
+        var song_progress_bar = null;
+        var song_current_time = null;
+        var song_time_remaining = null;
+        var play_button = null;
+        var pause_button = null;
+
+        //Source: https://stackoverflow.com/a/37770048
+        function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
+        
+        function toggleMusicPlayerUI(){ 
+            if (music_player_screen.style.display === "none"){
+                //Show screen
+                
+                music_player_screen.style.display = "";
+                content_screen.style.display = "none";
+                ui_menu_bar.style.display = "none";
+            }
+            else{
+                //Hide screen
+                
+                music_player_screen.style.display = "none";  
+                content_screen.style.display = "";
+                ui_menu_bar.style.display = "";
+            }
+        }
+        
         function updateSongData(data){
-		    if(data.current_time.toFixed(1)=="0.0") {
-			}else{
-			    if(data.current_time.toFixed(1)>"0.5") {
-				document.getElementById("music").setAttribute("style", "display:none");
-				document.getElementById("topBar").setAttribute("style", "");
-				}else{
-				    onStartPlaying();
-				} 
-			}
-            //time.textContent = data.current_time.toFixed(1);
-			if(data.name==musicname) {
-			}else{
-			    musicname=data.name;
-			}
+            if (innerDoc === null){
+                innerDoc = (music_player_screen.contentDocument) ? music_player_screen.contentDocument : music_player_screen.contentWindow.document;
+            
+                song_name = innerDoc.getElementById('song-name');
+                song_progress_bar = innerDoc.getElementById('song-progress-bar');
+                song_current_time = innerDoc.getElementById('song-current-time');
+                song_time_remaining = innerDoc.getElementById('song-time-remaining');
+                play_button = innerDoc.getElementById('play');
+                pause_button = innerDoc.getElementById('pause');
+            }
+            
+            song_name.textContent = data.name;   
+            song_progress_bar.value = data.current_time / data.duration;
+            song_current_time.textContent = fmtMSS(~~data.current_time);
+            song_time_remaining.textContent = "-" + fmtMSS(~~(data.duration - data.current_time));
+            
+            if (data.paused){
+                play_button.style.display = "";
+                pause_button.style.display = "none";
+            }
+            else{
+                play_button.style.display = "none";
+                pause_button.style.display = "";
+            }
         }
         
         return {
+            toggleMusicPlayerUI: toggleMusicPlayerUI,
             updateSongData: updateSongData
         }
     })();

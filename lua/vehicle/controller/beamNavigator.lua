@@ -17,7 +17,7 @@ local updateTimer = 0
 local updateFPS = 30
 local invFPS = 1 / updateFPS
 local gpsData = {x = 0, y = 0, rotation = 0, zoom = 1}
-local songData = {name = "test", current_time = 0, duration = 1}
+local songData = {name = "test", current_time = 0, duration = 1, paused = true}
 
 local function init(jbeamData)
   screenMaterialName = jbeamData.screenMaterialName or "@screen_gps"
@@ -32,6 +32,10 @@ end
 
 local function setSongData(data)
     songData = jsonDecode(data)
+end
+
+local function toggleMusicPlayerUI()
+    htmlTexture.call(screenMaterialName, "music_player.toggleMusicPlayerUI")
 end
 
 local function updateGFX(dt)
@@ -54,6 +58,7 @@ end
 
 M.init = init
 M.setSongData = setSongData
+M.toggleMusicPlayerUI = toggleMusicPlayerUI
 M.reset = nop -- this is needed so that we do not call init when reseting
 M.updateGFX = updateGFX
 
