@@ -46,7 +46,8 @@ angular.module('beamng.apps')
         var data = {
             name: song_name,
             current_time: audio.currentTime,
-            duration: audio.duration
+            duration: audio.duration,
+            paused: audio.paused
         };
         
         var json_data = JSON.stringify(data);
