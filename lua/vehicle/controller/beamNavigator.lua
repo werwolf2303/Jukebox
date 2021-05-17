@@ -18,8 +18,26 @@ local updateFPS = 30
 local invFPS = 1 / updateFPS
 local gpsData = {x = 0, y = 0, rotation = 0, zoom = 1}
 local songData = {name = "test", current_time = 0, duration = 1, paused = true}
+local ytpinstalled = false
+
+local function file_exists(name)
+  local f=io.open(name,"r")
+  if f~=nil then io.close(f) return true else return false end
+end
 
 local function init(jbeamData)
+  --ytpinstalled = file_exists("local://local/modules/apps/Video/luft.html")
+  --console.log("YouTube Player installed: " + ytpinstalled)
+  -- if(ytpinstalled) {
+  --  screenMaterialName = jbeamData.screenMaterialName or "@screen_gps"
+  --  htmlFilePath = jbeamData.htmlFilePath or "local://local/vehicles/vivace/default_navi_screen.html"
+  -- textureWidth = jbeamData.textureWidth or 256
+  --  textureHeight = jbeamData.textureHeight or 128
+  --  textureFPS = jbeamData.textureFPS or 30
+  
+  --  htmlTexture.create(screenMaterialName, htmlFilePath, textureWidth, textureHeight, textureFPS, "automatic")
+  --  obj:queueGameEngineLua(string.format("extensions.ui_uinavi.requestVehicleDashboardMap(%q)", screenMaterialName))
+  --}else{
   screenMaterialName = jbeamData.screenMaterialName or "@screen_gps"
   htmlFilePath = jbeamData.htmlFilePath or "local://local/vehicles/common/navi_screen.html"
   textureWidth = jbeamData.textureWidth or 256
@@ -28,6 +46,7 @@ local function init(jbeamData)
 
   htmlTexture.create(screenMaterialName, htmlFilePath, textureWidth, textureHeight, textureFPS, "automatic")
   obj:queueGameEngineLua(string.format("extensions.ui_uinavi.requestVehicleDashboardMap(%q)", screenMaterialName))
+  --}
 end
 
 local function setSongData(data)
