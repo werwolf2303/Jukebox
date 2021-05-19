@@ -4,6 +4,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-     - uses: montudor/action-zip@v1
-       with:
-        args: zip -qq -r dir.zip lua
+    - uses: actions/checkout@master
+    - name: Archive Release
+      uses: thedoctor0/zip-release@master
+      with:
+        filename: 'release.zip'
+        exclusions: '*.git* /*node_modules/* .editorconfig'
+    - name: Upload Release
+      uses: ncipollo/release-action@v1
+      with:
+         artifacts: "release.zip"
+         token: ${{ secrets.GITHUB_TOKEN }}
