@@ -13,8 +13,13 @@ jobs:
       with:
         filename: 'release.zip'
         exclusions: '*.git* /*node_modules/* .editorconfig'
-    - name: Upload Release
-      uses: ncipollo/release-action@v1
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v2.2.3
       with:
-         artifacts: "release.zip"
-         token: ${{ secrets.GITHUB_TOKEN }}
+         # Artifact name
+        name: "ActionsTest" # optional, default is artifact
+         # A file, directory or wildcard pattern that describes what to upload
+        path: "release.zip"
+         # The desired behavior if no files are found using the provided path
+
+  
