@@ -7,12 +7,10 @@ angular.module('beamng.apps')
         link: function (scope, element, attrs) {   
             var bug = document.getElementById("bug");
             var audio = document.getElementById("audio");	
-            var info = document.getElementById("info");
             var playlist_container = document.getElementById("playlist-container");
             
             var music_folder_dir = "mods/unpacked/BeamNG-Jukebox/ui/modules/apps/Jukebox/musik/";
-            
-            var current_playlist = null;
+
             var song_button_selected = null;
             
             scope.hello = function () {
@@ -36,9 +34,6 @@ angular.module('beamng.apps')
                 audio.src = clicked_song_button.song_dir;
                 audio.load();
                 audio.play();
-                
-                info.setAttribute("style", "color:white");
-                info.textContent="Jukebox Spielt";
             }
             
             function songButtonClicked(evt) {  
@@ -68,33 +63,29 @@ angular.module('beamng.apps')
                         var song_button = document.createElement("button");
                         song_button.className = "music-button";
                         song_button.textContent = song_name;
-                        song_button.id = "music-button-" + id;
+                        song_button.button_id = id;
                         song_button.song_dir = song_path;
                         
                         song_button.addEventListener("click", songButtonClicked, false);
                         
-                        playlist_container.appendChild(song_button);
+                        playlist_container.appendChild(song_button);                  
                     }
                     
-                    //song_button_selected = playlist_container.firstElementChild;
+                    song_button_selected = playlist_container.firstChild;
                     
-                    if (current_playlist !== new_playlist) {
-                        current_playlist = new_playlist;
-
+                    if (song_button_selected !== null) {
+                        song_button_selected.style.backgroundColor = "lightgray";
+                
+                        audio.src = song_button_selected.song_dir;    
+                        audio.load();
                     }
                 });
             }
             scope.pause = function () {
-                info.setAttribute("style", "color:white");
-                info.textContent="Jukebox Pausiert";
             };
             scope.play = function () {
-                info.setAttribute("style", "color:white");
-                info.textContent="Jukebox Spielt"; 
             };
             scope.ende = function () {
-                //info.setAttribute("style", "");
-                //info.textContent="Jukebox"; 
                 var next_song_button = song_button_selected.nextSibling;
                 
                 if (next_song_button !== null) {
@@ -105,14 +96,11 @@ angular.module('beamng.apps')
                     
                     playSong(playlist_container.firstElementChild);
                 }
-                
-                
-                
             };
             
             scope.$on('streamsUpdate', function (event, streams) {
                 /* Some code that uses the streams' values */
-                
+                //console.log(audio.src);
                 var src_split = audio.src.split("/");
                 var song_name = decodeURI(src_split[src_split.length - 1]);
 
@@ -133,7 +121,8 @@ angular.module('beamng.apps')
                 "end");
             });
             
-            scope.updatePlaylist();
+            //Init
+            scope.updatePlaylist();  
         }
     };
 }])            
