@@ -54,7 +54,11 @@ local function setSongData(data)
 end
 
 local function toggleMusicPlayerUI()
-    htmlTexture.call(screenMaterialName, "music_player.toggleMusicPlayerUI")
+    if htmlFilePath == "local://local/vehicles/common/ETK_navi_screen.html" 
+    or htmlFilePath == "local://local/vehicles/vivace/cherrier_navi_screen.html" 
+    then
+        htmlTexture.call(screenMaterialName, "music_player.toggleMusicPlayerUI")
+    end
 end
 
 local function updateGFX(dt)
@@ -71,7 +75,12 @@ local function updateGFX(dt)
     gpsData.rotation = rotation
     gpsData.zoom = zoom
     htmlTexture.call(screenMaterialName, "map.updateData", gpsData)
-    htmlTexture.call(screenMaterialName, "music_player.updateSongData", songData)
+    
+    if htmlFilePath == "local://local/vehicles/common/ETK_navi_screen.html" 
+    or htmlFilePath == "local://local/vehicles/vivace/cherrier_navi_screen.html" 
+    then
+        htmlTexture.call(screenMaterialName, "music_player.updateSongData", songData)
+    end
   end
 end
 

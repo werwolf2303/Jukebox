@@ -249,10 +249,14 @@ body {
                 pause_button = innerDoc.getElementById('pause');
             }
             
-            song_name.textContent = data.name;   
-            song_progress_bar.value = data.current_time / data.duration;
+            song_name.textContent = data.name;
+            
+            var progress_bar_val = data.current_time / data.duration;
+            progress_bar_val = isFinite(progress_bar_val) ? progress_bar_val : 0;
+            
+            song_progress_bar.value = progress_bar_val;
             song_current_time.textContent = fmtMSS(~~data.current_time);
-            song_time_remaining.textContent = "-" + fmtMSS(~~(data.duration - data.current_time));
+            song_time_remaining.textContent = "-" + fmtMSS((~~data.duration - ~~data.current_time));
             
             if (data.paused){
                 play_button.style.display = "";

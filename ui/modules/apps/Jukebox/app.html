@@ -1,40 +1,65 @@
-<div style="background-image:url('')">
-<center>
-<div id="info">
-<a id="info" style="color:black">Jukebox</a>
-</div>
-<audio ontimeupdate="document.getElementById('play').click()" onended="document.getElementById('end').click()" oncanplaythrough="document.getElementById('play').click()" onseeking="document.getElementById('pause').click()" onseeked="document.getElementById('play').click()" ondurationchange="console.log(this.duration)" oncanplay="document.getElementById('play').click()" onplay="document.getElementById('play').click()" onplaying="document.getElementById('play').click()" onpause="document.getElementById('pause').click()" style="width:100%" id="audio" controls><source src="/ui/modules/apps/Jukebox/musik/first.mp3"></audio>
-<button ng-click="pause()" id="pause" style="display:none">pause</button>
-<button ng-click="play()" id="play" style="display:none">play</button>
-<button ng-click="ende()" id="end" style="display:none">end</button>
-<br>
-<script>
-document.getElementById("info").setAttribute("style", "color:black");
-</script>
-<style>
-#file-input {
-  cursor: pointer;
-  outline: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 0;
-  overflow: hidden;
-  filter: alpha(opacity=0); /* IE < 9 */
-  opacity: 0;
-}
-.input-label {
-  cursor: pointer;
-  position: relative;
-  display: inline-block;
-}
-</style>
-<a style="display:none" id="bug">0</a>
-<label for="file-input" class="input-label">
-  <button id="click" onclick="document.getElementById('file-input').click()">Suchen</button>
-  <input onchange="document.getElementById('change').click()" type="file" id="file-input">
-</label>
-<button ng-click="select()" style="display:none" id="change">change</button> 
-</center>
-</div>
+<div style="display: flex; flex-direction: column; height:100%; width:100%; overflow: hidden;"> 
+    <script>
+        document.getElementById("info").setAttribute("style", "color:black");
+    </script>
+    <style>
+        #file-input {
+            cursor: pointer;
+            outline: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            overflow: hidden;
+            filter: alpha(opacity=0); /* IE < 9 */
+            opacity: 0;
+            }
+            .input-label {
+            cursor: pointer;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .music-button {
+            border: none; 
+            text-decoration: none;
+            text-align: left;
+            background-color: white;
+            min-height: 40px;
+            max-height: 40px;
+            padding-left: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-button:hover {
+            background-color: lightgray;
+        }
+    </style>
+    
+    <div style="">
+        <div style="display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between">
+                <button ng-click="openMusicFolder()" style="margin-bottom: 6px;" id="open-folder-button">Music Folder</button>
+                <button ng-click="updatePlaylist()" style="margin-bottom: 6px;" id="update-playlist-button">Refresh Playlist</button>
+            </div>
+        </div>
+    
+        <center>
+            <audio preload="auto" ontimeupdate="document.getElementById('play').click()" onended="document.getElementById('end').click()" oncanplaythrough="document.getElementById('play').click()" onseeking="document.getElementById('pause').click()" onseeked="document.getElementById('play').click()" oncanplay="document.getElementById('play').click()" onplay="document.getElementById('play').click()" onplaying="document.getElementById('play').click()" onpause="document.getElementById('pause').click()" style="width:100%" id="audio" controls>
+                <source src="" />
+            </audio>
+            <button ng-click="pause()" id="pause" style="display:none">pause</button>
+            <button ng-click="play()" id="play" style="display:none">play</button>
+            <button ng-click="ende()" id="end" style="display:none">end</button>
+            <br>
+            
+        </center>
+        <a style="display:none" id="bug">0</a>
+    </div>
+    <div id="playlist-container" style="display: flex; flex-direction: column; overflow: auto;">   
+    </div>
+       
+</div>        
