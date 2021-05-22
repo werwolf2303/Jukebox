@@ -64,8 +64,9 @@
 </head>
 
 <body>
+    <iframe id="music-player-screen" style="height: 100%; width:100%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display:none;" src="music_screen.html"></iframe>
     <div id="bootscreen"></div>
-    <div style="height: 100%; width: 100%; position: relative;">
+    <div id="content" style="height: 100%; width: 100%; position: relative;">
         <div style="width: 100%; height: 100%; z-index:1; position: absolute;">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="256" height="128"
                 viewBox="0 0 67.733 33.867" id="svg8">
@@ -138,7 +139,7 @@
             </div>
         </div>
     </div>
-    <div style="position: absolute; top: 48px; left: 112px; transform: rotateX(50deg)">
+    <div id="vehicle-marker" style="position: absolute; top: 48px; left: 112px; transform: rotateX(50deg)">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 33.867 33.867" id="svg8">
             <g id="layer1" transform="translate(0 -263.133)">
                 <g id="vehicleMarker" transform="matrix(4.53704 0 0 4.53704 -7.075 -1044.026)" stroke-width=".265">
@@ -152,13 +153,72 @@
 
 <script>
     var music_player = (function () {
-        var time = document.getElementById('timeText');
+        var content_screen = document.getElementById('content');
+        var vehicle_marker = document.getElementById('vehicle-marker');
+        
+        var music_player_screen = document.getElementById('music-player-screen');  
+        var innerDoc = null;
     
+        var song_name = null;
+        var song_progress_bar = null;
+        var song_current_time = null;
+        var song_time_remaining = null;
+        var play_button = null;
+        var pause_button = null;
+
+        //Source: https://stackoverflow.com/a/37770048
+        function fmtMSS(s){return(s-(s%=60))/60+(9<s?':':':0')+s}
+        
+        function toggleMusicPlayerUI(){ 
+            if (music_player_screen.style.display === "none"){
+                //Show screen
+                
+                music_player_screen.style.display = "";
+                content_screen.style.display = "none";
+                vehicle_marker.style.display = "none";
+            }
+            else{
+                //Hide screen
+                
+                music_player_screen.style.display = "none";  
+                content_screen.style.display = "";
+                vehicle_marker.style.display = "";
+            }
+        }
+        
         function updateSongData(data){
-            time.textContent = data.current_time.toFixed(1);
+            if (innerDoc === null){
+                innerDoc = (music_player_screen.contentDocument) ? music_player_screen.contentDocument : music_player_screen.contentWindow.document;
+            
+                song_name = innerDoc.getElementById('song-name');
+                song_progress_bar = innerDoc.getElementById('song-progress-bar');
+                song_current_time = innerDoc.getElementById('song-current-time');
+                song_time_remaining = innerDoc.getElementById('song-time-remaining');
+                play_button = innerDoc.getElementById('play');
+                pause_button = innerDoc.getElementById('pause');
+            }
+            
+            song_name.textContent = data.name;
+            
+            var progress_bar_val = data.current_time / data.duration;
+            progress_bar_val = isFinite(progress_bar_val) ? progress_bar_val : 0;
+            
+            song_progress_bar.value = progress_bar_val;
+            song_current_time.textContent = fmtMSS(~~data.current_time);
+            song_time_remaining.textContent = "-" + fmtMSS((~~data.duration - ~~data.current_time));
+            
+            if (data.paused){
+                play_button.style.display = "";
+                pause_button.style.display = "none";
+            }
+            else{
+                play_button.style.display = "none";
+                pause_button.style.display = "";
+            }
         }
         
         return {
+            toggleMusicPlayerUI: toggleMusicPlayerUI,
             updateSongData: updateSongData
         }
     })();
@@ -253,7 +313,7 @@
             var date = new Date();
             var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
             var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-            //time.textContent = "yeet";
+            time.textContent = hours + ":" + minutes;
             var focusX = state.x / mapScale;
             var focusY = state.y / mapScale;
             var origin = `${((mapDimensions[0] * -1) / mapScale) - focusX}px ${((mapDimensions[1] * -1) / mapScale) - focusY}px`;

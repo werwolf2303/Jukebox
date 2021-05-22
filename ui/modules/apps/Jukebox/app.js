@@ -115,10 +115,8 @@ angular.module('beamng.apps')
                 
                 //Send data to Lua beamNavigator controller
                 bngApi.activeObjectLua(
-                "local beamNav = controller.getControllersByType('beamNavigator')[1];" +
-                "if beamNav then " +
-                "   beamNav.setSongData('" + json_data + "') " +
-                "end");
+                "for _, beamNav in pairs(controller.getControllersByType('beamNavigator')) do beamNav.setSongData('" + json_data + "') end"
+                );
             });
             
             //Init
